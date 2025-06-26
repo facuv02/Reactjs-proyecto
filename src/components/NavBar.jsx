@@ -1,56 +1,110 @@
-// components/NavBar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import CartWidget from './CarWidget';
 
-const navbarStyle = {
-  display: 'flex',
-  justifyContent: 'center', // Centra horizontalmente
-  alignItems: 'center',
-  padding: '10px 30px',
-  backgroundColor: '#ffffff',
-  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-  position: 'sticky',
-  top: 0,
-  zIndex: 10,
-};
-
-const contentContainerStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '40px', // Espacio entre enlaces y carrito
-};
-
-const linksContainerStyle = {
-  display: 'flex',
-  gap: '20px',
-};
-
-const linkStyle = {
-  textDecoration: 'none',
-  color: '#000', // Texto negro
-  fontWeight: '500',
-};
-
-const cartStyle = {
-  position: 'relative',
-};
-
-const Navbar = () => {
+const NavBar = () => {
   const categorias = ['laptops', 'smartphones', 'tablets', 'smartwatches'];
+  const { pathname } = useLocation();
+
+  const navStyle = {
+    backgroundColor: '#ffffff',
+    borderBottom: '1px solid #e0e0e0',
+    position: 'sticky',
+    top: 0,
+    zIndex: 100,
+  };
+
+  const containerStyle = {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '0.75rem 1rem',
+  };
+
+  const linksWrapper = {
+    display: 'flex',
+    gap: '2rem',
+    flex: 1,
+    justifyContent: 'center',
+  };
+
+  const linkBase = {
+    textDecoration: 'none',
+    color: '#333333',
+    fontWeight: 500,
+    fontSize: '1rem',
+    padding: '0.25rem 0',
+    position: 'relative',
+    transition: 'color 0.2s ease',
+  };
+
+  const linkActive = {
+    color: '#1976d2',
+  };
+
+  const underline = {
+    content: "''",
+    position: 'absolute',
+    bottom: '-4px',
+    left: 0,
+    height: '2px',
+    width: '100%',
+    backgroundColor: '#1976d2',
+  };
 
   return (
-    <nav style={navbarStyle}>
-      <div style={contentContainerStyle}>
-        <div style={linksContainerStyle}>
-          <Link to="/productos" style={linkStyle}>Inicio</Link>
-          {categorias.map(cat => (
-            <Link key={cat} to={`/categoria/${cat}`} style={linkStyle}>
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </Link>
-          ))}
+    <nav style={navStyle}>
+      <div style={containerStyle}>
+        {}
+        <div style={{ width: '1rem' }} />
+
+        {}
+        <div style={linksWrapper}>
+          <Link
+            to="/productos"
+            style={{
+              ...linkBase,
+              ...(pathname === '/productos' ? linkActive : {}),
+            }}
+          >
+            Inicio
+            {pathname === '/productos' && <span style={underline} />}
+          </Link>
+
+          {categorias.map(cat => {
+            const path = `/categoria/${cat}`;
+            const isActive = pathname === path;
+            return (
+              <Link
+                key={cat}
+                to={path}
+                style={{
+                  ...linkBase,
+                  ...(isActive ? linkActive : {}),
+                }}
+              >
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                {isActive && <span style={underline} />}
+              </Link>
+            );
+          })}
+
+          <Link
+            to="/consulta"
+            style={{
+              ...linkBase,
+              ...(pathname === '/consulta' ? linkActive : {}),
+            }}
+          >
+            Consultar Compra
+            {pathname === '/consulta' && <span style={underline} />}
+          </Link>
         </div>
-        <div style={cartStyle}>
+
+        {}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <CartWidget />
         </div>
       </div>
@@ -58,4 +112,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;
