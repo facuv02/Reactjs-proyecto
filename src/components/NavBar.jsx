@@ -8,7 +8,7 @@ const NavBar = () => {
 
   const navStyle = {
     backgroundColor: '#ffffff',
-    borderBottom: '1px solid #e0e0e0',
+    borderBottom: '1px solidrgb(74, 61, 61)',
     position: 'sticky',
     top: 0,
     zIndex: 100,
